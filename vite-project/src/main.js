@@ -45,7 +45,7 @@ import "./style.css";
 async function getAllData() {
   try {
     const response = await fetch(
-      "https://kitsu.io/api/edge/anime?page[limit]=5&page[offset]=500"
+      "https://kitsu.io/api/edge/anime?page[limit]=5&page[offset]=1000"
     );
     if (response.status != 200) {
       throw new Error(repsonse);
