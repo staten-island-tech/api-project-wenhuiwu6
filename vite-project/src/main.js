@@ -23,21 +23,38 @@ import "./style.css";
 
 // setupCounter(document.querySelector('#counter'))
 
-const URL = "https://kitsu.io/api/edge/anime?page[limit]=5&page[offset]=500";
+// const URL = "https://kitsu.io/api/edge/anime?page[limit]=5&page[offset]=500";
 
-async function getData(URL) {
+// async function getData(URL) {
+//   try {
+//     const response = await fetch(URL);
+//     if (response.status != 200) {
+//       throw new Error(response);
+//     } else {
+//       const data = await response.json(); //makes the data into JSON object we can use
+//       console.log(data);
+//       document.getElementById("api-response").textContent = data.name;
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     console.log("no bueno");
+//   }
+// }
+// getData(URL);
+
+async function getAllData() {
   try {
-    const response = await fetch(URL);
+    const response = await fetch(
+      "https://kitsu.io/api/edge/anime?page[limit]=5&page[offset]=500"
+    );
     if (response.status != 200) {
-      throw new Error(response);
+      throw new Error(repsonse);
     } else {
-      const data = await response.json(); //makes the data into JSON object we can use
-      console.log(data);
-      document.getElementById("api-response").textContent = data.name;
+      const data = await response.json();
+      data.data.forEach((card) => console.log(card));
     }
   } catch (error) {
     console.log(error);
-    console.log("no bueno");
   }
 }
-getData(URL);
+getAllData();
