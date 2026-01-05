@@ -42,17 +42,61 @@ import "./style.css";
 // }
 // getData(URL);
 
+// let data = [];
+// async function getAllData() {
+//   try {
+//     const response = await fetch(
+//       "https://kitsu.io/api/edge/anime?page[limit]=5&page[offset]=1000"
+//     );
+//     if (response.status != 200) {
+//       throw new Error(repsonse);
+//     } else {
+//       data = await response.json();
+//       data.data.forEach((card) => console.log(card));
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
+// function inject(item) {
+//   const container = document.querySelector(".container");
+//   console.log("we are putting this in", item);
+//   const html = `
+//     <div class="card"
+//          data-name="${item.name}"
+//          data-img="${item.image}"
+//          data-alt="${item.alt}"
+//          data-year="${item.year}">
+//       <img class="card-img" src="${item.image}">
+//       <h2 class="card-name">${item.name}</h2>
+//       <p class="card-alt">${item.alt}</p>
+//       <p class="card-year">Year: ${item.year}</p>
+//       <button class="toRead">Read</button>
+//     </div>`;
+//   container.insertAdjacentHTML("afterbegin", html);
+// }
+
+// getAllData();
+// console.log("this is data", data);
+// data.data.forEach((item) => inject(item));
+
 let data = [];
+
 async function getAllData() {
   try {
     const response = await fetch(
       "https://kitsu.io/api/edge/anime?page[limit]=5&page[offset]=1000"
     );
+
     if (response.status != 200) {
-      throw new Error(repsonse);
+      throw new Error(response);
     } else {
       data = await response.json();
-      data.data.forEach((card) => console.log(card));
+
+      console.log("this is data", data);
+
+      data.data.forEach((item) => inject(item));
     }
   } catch (error) {
     console.log(error);
@@ -62,6 +106,7 @@ async function getAllData() {
 function inject(item) {
   const container = document.querySelector(".container");
   console.log("we are putting this in", item);
+
   const html = `
     <div class="card"
          data-name="${item.name}"
@@ -74,9 +119,8 @@ function inject(item) {
       <p class="card-year">Year: ${item.year}</p>
       <button class="toRead">Read</button>
     </div>`;
+
   container.insertAdjacentHTML("afterbegin", html);
 }
 
 getAllData();
-console.log("this is data", data);
-data.data.forEach((item) => inject(item));
