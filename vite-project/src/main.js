@@ -42,8 +42,6 @@ import "./style.css";
 // }
 // getData(URL);
 
-let datas = [];
-
 // async function getAllData() {
 //   try {
 //     const response = await fetch(
@@ -69,8 +67,9 @@ async function getAllData() {
     if (response.status != 200) {
       throw new Error(repsonse);
     } else {
-      data = await response.json();
+      const data = await response.json();
       data.data.forEach((card) => console.log(card));
+      return data;
     }
   } catch (error) {
     console.log(error);
@@ -78,21 +77,22 @@ async function getAllData() {
 }
 getAllData();
 
-function inject(item) {
+const data = await getAllData();
+
+function inject(data) {
   const container = document.querySelector(".container");
-  console.log("we are putting this in", item);
   const html = `
     <div class="card"
-         data-name="${item.canonicalTitle}"
-         data-img="${item.medium}"
-         data-alt="${item.synopsis}"
-         data-id="${item.id}">
-      <img class="card-img" src="${item.medium}">
-      <h2 class="card-name">${item.canonicalTitle}</h2>
-      <p class="card-alt">${item.synopsis}</p>
-      <p class="card-id">Year: ${item.id}</p>
-      <button class="toRead">Read</button>
+      <h2 class="card-title">${data.attributes.titles.en}</h2>
+      <p class="card-alt">${data.attributes.synopsis}</p>
+      <img class="card-img" src="${data.attributes.posterImage.tiny}"></img>
     </div>`;
   container.insertAdjacentHTML("afterbegin", html);
 }
-datas.forEach((item) => inject(item));
+data.data.forEach((item) => inject(item));
+
+// <img class="card-img" src="${data.posterImage.tiny}"></img>
+// not working
+if (data.attributes.titles.en === "undefined") {
+  error;
+}
