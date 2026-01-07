@@ -84,6 +84,7 @@ function inject(data) {
   const html = `
     <div class="card"
       <h2 class="card-title">${data.attributes.titles.en}</h2>
+      <h2 class="card-title">${data.attributes.titles.ja_jp}</h2>
       <p class="card-alt">${data.attributes.synopsis}</p>
       <img class="card-img" src="${data.attributes.posterImage.tiny}"></img>
     </div>`;
@@ -91,8 +92,24 @@ function inject(data) {
 }
 data.data.forEach((item) => inject(item));
 
-// <img class="card-img" src="${data.posterImage.tiny}"></img>
-// not working
-if (data.attributes.titles.en === "undefined") {
-  error;
-}
+// document.getElementById("searchForm").addEventListener("submit", function (e) {
+//   e.preventDefault();
+
+//   const value = document.getElementById("title").value.toLowerCase();
+//   const container = document.querySelector(".container");
+
+//   container.innerHTML = "";
+
+//   let found = false;
+
+//   mangas.forEach((item) => {
+//     if (item.name.toLowerCase().includes(value)) {
+//       inject(item);
+//       found = true;
+//     }
+//   });
+
+//   if (!found) {
+//     container.innerHTML = "<p>No manga found.</p>";
+//   }
+// });
