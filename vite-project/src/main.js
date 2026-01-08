@@ -62,7 +62,7 @@ import "./style.css";
 async function getAllData() {
   try {
     const response = await fetch(
-      "https://kitsu.io/api/edge/anime?page[limit]=5&page[offset]=1000"
+      "https://kitsu.io/api/edge/anime?page[limit]=20&page[offset]=100"
     );
     if (response.status != 200) {
       throw new Error(repsonse);
@@ -83,6 +83,7 @@ function inject(data) {
   const container = document.querySelector(".container");
   const html = `
     <div class="card"
+        data-name="${data.attributes.titles.en}" 
       <h2 class="card-title">${data.attributes.titles.en}</h2>
       <h2 class="card-title">${data.attributes.titles.ja_jp}</h2>
       <p class="card-alt">${data.attributes.synopsis}</p>
@@ -92,24 +93,24 @@ function inject(data) {
 }
 data.data.forEach((item) => inject(item));
 
-// document.getElementById("searchForm").addEventListener("submit", function (e) {
-//   e.preventDefault();
+document.getElementById("searchForm").addEventListener("submit", function (e) {
+  e.preventDefault();
 
-//   const value = document.getElementById("title").value.toLowerCase();
-//   const container = document.querySelector(".container");
+  const value = document.getElementById("title").value.toLowerCase();
+  const container = document.querySelector(".container");
 
-//   container.innerHTML = "";
+  container.innerHTML = "";
 
-//   let found = false;
+  let found = false;
 
-//   mangas.forEach((item) => {
-//     if (item.name.toLowerCase().includes(value)) {
-//       inject(item);
-//       found = true;
-//     }
-//   });
+  mangas.forEach((item) => {
+    if (item.name.toLowerCase().includes(value)) {
+      inject(item);
+      found = true;
+    }
+  });
 
-//   if (!found) {
-//     container.innerHTML = "<p>No manga found.</p>";
-//   }
-// });
+  if (!found) {
+    container.innerHTML = "<p>No manga found.</p>";
+  }
+});

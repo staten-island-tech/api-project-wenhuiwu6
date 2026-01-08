@@ -7,8 +7,20 @@
     <title>Fetch API</title>
   </head>
   <body>
-    <h2 id="api-response"></h2>
+    <h1 id="api-response"></h1>
+
+    <form id="searchForm">
+      <input
+        type="text"
+        id="title"
+        placeholder="Search manga..."
+        autocomplete="off"
+      />
+      <button type="submit">Search</button>
+    </form>
+
     <div class="container"></div>
+    
     <div id="app"></div>
     <script type="module" src="./src/main.js"></script>
   </body>
