@@ -84,7 +84,7 @@ document.getElementById("searchForm").addEventListener("submit", function (e) {
   }
 });
 
-//the second api?, testing if api work
+//the second api, testing if api work
 async function searchAnimeAPI(searchTerm) {
   try {
     const response = await fetch(
