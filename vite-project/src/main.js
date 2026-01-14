@@ -23,42 +23,6 @@ import "./style.css";
 
 // setupCounter(document.querySelector('#counter'))
 
-// const URL = "https://kitsu.io/api/edge/anime?page[limit]=5&page[offset]=500";
-
-// async function getData(URL) {
-//   try {
-//     const response = await fetch(URL);
-//     if (response.status != 200) {
-//       throw new Error(response);
-//     } else {
-//       const data = await response.json(); //makes the data into JSON object we can use
-//       console.log(data);
-//       document.getElementById("api-response").textContent = data.name;
-//     }
-//   } catch (error) {
-//     console.log(error);
-//     console.log("no bueno");
-//   }
-// }
-// getData(URL);
-
-async function getAllData() {
-  try {
-    const response = await fetch(
-      "https://kitsu.io/api/edge/anime?page[limit]=5&page[offset]=1000"
-    );
-    if (response.status != 200) {
-      throw new Error(repsonse);
-    } else {
-      const data = await response.json();
-      data.data.forEach((card) => console.log(card));
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
-getAllData();
-
 async function getAllData() {
   try {
     const response = await fetch(
@@ -82,35 +46,75 @@ const data = await getAllData();
 function inject(data) {
   const container = document.querySelector(".container");
   const html = `
-    <div class="card"
-        data-name="${data.attributes.titles.en}"
-      <h2 class="card-title">${data.attributes.titles.en}</h2>
-      <h2 class="card-title">${data.attributes.titles.ja_jp}</h2>
-      <p class="card-alt">${data.attributes.synopsis}</p>
-      <img class="card-img" src="${data.attributes.posterImage.tiny}"></img>
+    <div class="card bg-white p-4 rounded shadow"
+        data-name="${data.attributes.titles.en}" 
+      <h2 class="card-title font-bold">
+        ${data.attributes.titles.en}
+      </h2>
+      <h2 class="card-title text-sm text-gray-500">
+        ${data.attributes.titles.ja_jp}
+      </h2>
+      <p class="card-alt text-sm">
+        ${data.attributes.synopsis}
+      </p>
+      <img
+        class="card-img mt-2 rounded"
+        src="${data.attributes.posterImage.medium}"
+      />
     </div>`;
   container.insertAdjacentHTML("afterbegin", html);
 }
 data.data.forEach((item) => inject(item));
 
-// document.getElementById("searchForm").addEventListener("submit", function (e) {
-//   e.preventDefault();
+document.getElementById("searchForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const value = document.getElementById("title").value.toLowerCase();
+  const container = document.querySelector(".container");
+  container.innerHTML = "";
+  let found = false;
 
-//   const value = document.getElementById("title").value.toLowerCase();
-//   const container = document.querySelector(".container");
+  anime.forEach((item) => {
+    if (item.name.toLowerCase().includes(value)) {
+      inject(item);
+      found = true;
+    }
+  });
+  if (!found) {
+    container.innerHTML = "<p>No anime found.</p>";
+  }
+});
 
-//   container.innerHTML = "";
+//the second api?, testing if api work
+async function searchAnimeAPI(searchTerm) {
+  try {
+    const response = await fetch(
+      `https://kitsu.io/api/edge/anime?filter[text]=${searchTerm}`
+    );
+    //the search term here allows u to search the anime u tryna find ex: Evangelion
+    if (!response.ok) {
+      throw new Error("Search API failed");
+    }
 
-//   let found = false;
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-//   mangas.forEach((item) => {
-//     if (item.name.toLowerCase().includes(value)) {
-//       inject(item);
-//       found = true;
-//     }
-//   });
+document
+  .getElementById("searchForm")
 
-//   if (!found) {
-//     container.innerHTML = "<p>No anime found.</p>";
-//   }
-// });
+  .addEventListener("submit", async function () {
+    const container = document.querySelector(".container");
+    const value = document.getElementById("title").value;
+    container.innerHTML = "";
+
+    const results = await searchAnimeAPI(value);
+
+    if (!results || results.length === 0) {
+      container.innerHTML = "<p class='text-center'>No anime found.</p>";
+      return;
+    }
+    results.forEach((item) => inject(item));
+  });
